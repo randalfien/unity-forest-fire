@@ -354,8 +354,8 @@ public class ForestPart : MonoBehaviour
 		if (_treeData[localX][localY] > 0)
 		{
 			_treeData[localX][localY] = 0;
+			MakeMesh();
 		}
-		MakeMesh();
 		UpdateColors();
 	}
 
