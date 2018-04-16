@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="226d205b-188a-45cc-868f-1c2eabb7d46b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/scripts/ForestPart.cs" afterPath="$PROJECT_DIR$/Assets/scripts/ForestPart.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -63,10 +63,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ForestPart.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ForestPart.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/scripts/ForestPart.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
+            <state relative-caret-position="260">
               <caret line="41" column="34" lean-forward="false" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="34" />
               <folding>
                 <marker date="1523910623026" expanded="false" signature="6:52" ph="..." />
@@ -128,6 +128,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -150,6 +160,7 @@
         <option value="$PROJECT_DIR$/Assets/shaders/TreeShader.shader" />
         <option value="$PROJECT_DIR$/Assets/scripts/Forest.cs" />
         <option value="$PROJECT_DIR$/Assets/scripts/ForestPart.cs" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -159,7 +170,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="960" />
     <option name="width" value="960" />
     <option name="height" value="1152" />
@@ -246,7 +257,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1170" extended-state="7" />
+    <frame x="-9" y="-9" width="1938" height="1170" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15520833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -574,7 +585,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/scripts/ForestPart.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
+        <state relative-caret-position="260">
           <caret line="41" column="34" lean-forward="false" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="34" />
           <folding>
             <marker date="1523910623026" expanded="false" signature="6:52" ph="..." />
@@ -632,6 +643,14 @@
             <marker date="1523910623026" expanded="true" signature="9027:9059" ph="{...}" />
             <marker date="1523910623026" expanded="true" signature="9196:9676" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>

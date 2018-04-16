@@ -10,4 +10,4 @@ A simulation of the effects of wind on forest fire done in Unity
   - Set trees on fire or extinguish them
 
 ### Author
-Ond?ej Pa�ka
+Ondřej Paška
