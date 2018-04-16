@@ -30,6 +30,7 @@ public class Forest : MonoBehaviour
 				partComp.MyY = j;
 				partComp.OtherParts = _parts;
 				partComp.TerrainData = Terrain.terrainData;
+				partComp.Wind = SceneManager.WindBaseMatrix;
 				partComp.enabled = false;
 				_parts[i, j] = partComp;
 			}
@@ -86,6 +87,14 @@ public class Forest : MonoBehaviour
 			part.enabled = value;
 		}
 	}
+	
+	public void WindChanged(float[,] windMatrix)
+	{
+		foreach (var part in _parts)
+		{
+			part.Wind = windMatrix;
+		}
+	}
 
 	public void GenerateRandomForest()
 	{
@@ -98,4 +107,5 @@ public class Forest : MonoBehaviour
 			part.InitPart();
 		}
 	}
+
 }

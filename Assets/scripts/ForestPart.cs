@@ -32,6 +32,8 @@ public class ForestPart : MonoBehaviour
 	[HideInInspector] public int MyY;
 	[HideInInspector] public ForestPart[,] OtherParts;
 	[HideInInspector] public TerrainData TerrainData;
+	[HideInInspector] public float[,] Wind;
+
 
 	// Use this for initialization
 	void Awake()
@@ -78,29 +80,36 @@ public class ForestPart : MonoBehaviour
 
 					if (x > 0 && x < W - 1 && y > 0 && y < W - 1)
 					{
-						byte t; 
+						byte t;
 						t = _treeData[x + 1][y];
-						if (t >= F && t < OUT) neigh++;
+						if (t >= F && t < OUT) neigh += Wind[2, 1];
 						t = _treeData[x - 1][y];
-						if (t >= F && t < OUT) neigh++;
+						if (t >= F && t < OUT) neigh += Wind[0, 1];
 						t = _treeData[x][y + 1];
-						if (t >= F && t < OUT) neigh++;
+						if (t >= F && t < OUT) neigh += Wind[1, 2];
 						t = _treeData[x][y - 1];
-						if (t >= F && t < OUT) neigh++;
+						if (t >= F && t < OUT) neigh += Wind[1, 0];
 
 						t = _treeData[x + 1][y + 1];
-						if (t >= F && t < OUT) neigh += 0.5f;
+						if (t >= F && t < OUT) neigh += Wind[2, 2];
 						t = _treeData[x - 1][y + 1];
-						if (t >= F && t < OUT) neigh += 0.5f;
+						if (t >= F && t < OUT) neigh += Wind[0, 2];
 						t = _treeData[x + 1][y - 1];
-						if (t >= F && t < OUT) neigh += 0.5f;
+						if (t >= F && t < OUT) neigh += Wind[2, 0];
 						t = _treeData[x - 1][y - 1];
-						if (t >= F && t < OUT) neigh += 0.5f;
+						if (t >= F && t < OUT) neigh += Wind[0, 0];
 					}
 					else
 					{
-						neigh += IsFire(x - 1, y) + IsFire(x, y - 1) + IsFire(x, y + 1) + IsFire(x + 1, y);
-						neigh += 0.5f * (IsFire(x - 1, y + 1) + IsFire(x - 1, y + 1) + IsFire(x + 1, y + 1) + IsFire(x + 1, y + 1));
+						neigh += Wind[0, 1] * IsFire(x - 1, y)
+						         + Wind[1, 0] * IsFire(x, y - 1)
+						         + Wind[1, 2] * IsFire(x, y + 1)
+						         + Wind[2, 1] * IsFire(x + 1, y);
+
+						neigh += Wind[2, 2] * IsFire(x + 1, y + 1)
+						         + Wind[0, 2] * IsFire(x - 1, y + 1)
+						         + Wind[2, 0] * IsFire(x + 1, y - 1)
+						         + Wind[0, 0] * IsFire(x - 1, y - 1);
 					}
 
 					_treeData[x][y] += (byte) neigh;

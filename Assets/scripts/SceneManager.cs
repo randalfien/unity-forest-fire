@@ -25,9 +25,35 @@ public class SceneManager : MonoBehaviour
 
 	public LayerMask TerrainLayer;
 
+	public Slider WindSpeedSlider;
+	public Slider WindDirectionSlider;
+
+	public float[,] WindMatrix; //3x3 matrix
+	public static float[,] WindBaseMatrix; //how fire spreads with no wind
+	private Vector2[,] WindMatrixVectors; //3x3 matrix, helps with wind calculation
+	
 	void Start()
 	{
 		_camera = Camera.main;
+
+		WindMatrix = new float[3,3];
+		WindBaseMatrix = new float[3,3];
+		WindMatrixVectors = new Vector2[3,3];
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				WindMatrixVectors[i,j] = new Vector2(i-1,j-1).normalized;
+				if (i == 1 || j == 1)
+				{
+					WindBaseMatrix[i, j] = 1f;
+				}
+				else
+				{
+					WindBaseMatrix[i, j] = 0.5f;
+				}
+			} 
+		}
 	}
 	
 	void Update () {
@@ -49,7 +75,6 @@ public class SceneManager : MonoBehaviour
 
 		var p = hit.point;
 
-		print(p);
 		var mode = ModeDropdown.value;
 		switch (mode)
 		{
@@ -63,10 +88,40 @@ public class SceneManager : MonoBehaviour
 				break;
 		}
 	}
-
-	public void OnModeChange()
+	
+	public void WindSpeedChange()
 	{
-		print(ModeDropdown.value);
+		UpdateWind();
+	}
+	
+	public void WindDirChange()
+	{
+		UpdateWind();
+	}
+
+	private void UpdateWind()
+	{
+		var speed = WindSpeedSlider.value;
+		var angle = WindDirectionSlider.value;
+		Vector2 v = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+		print("----------- v:"+v);
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				var a = Vector2.Dot( WindMatrixVectors[i, j],v);
+				
+				WindMatrix[i, j] = WindBaseMatrix[i,j] + a*speed;				
+
+				if (WindMatrix[i, j] < 0)
+				{
+					WindMatrix[i, j] = 0;
+				}
+			}
+			print( WindMatrix[i,0].ToString("0.00")+"|"+WindMatrix[i,1].ToString("0.00")+"|"+WindMatrix[i,2].ToString("0.00"));
+		}
+		
+		Forest.WindChanged(WindMatrix);
 	}
 
 	public void StartStopSimulation()
