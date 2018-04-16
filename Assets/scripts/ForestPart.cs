@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 /**
- * 
+ * Forest Part
+ * Can generated random trees using the Perlin noise function.
+ * One mesh only. Colors are updated in one array, so 0 memory
+ * allocations unless the whole mesh has to be rebuild (Add/Remove trees). 
  */
 public class ForestPart : MonoBehaviour
 {
@@ -14,7 +17,7 @@ public class ForestPart : MonoBehaviour
 	public float TreeDensity = 10;
 	public float TreeSize = 0.9f; //For values > 1, trees will overlap
 
-	public const int Size = 55; //Size of the part, part is always square.
+	public const int Size = 55; //Size of the part, part is always square. If value > 60, the limit of 64k verts might be reached.
 	
 	[Range(0, 1)] public float FireSpreadSpeed = 0.6f;
 	[Range(0, 1)] public float BurnSpeed = 0.6f;
@@ -38,7 +41,7 @@ public class ForestPart : MonoBehaviour
 	private Mesh _areaMesh;
 	private MeshFilter _meshFilter;
 
-	private Color32[] _treeColors;
+	private Color32[] _treeColors; //color for each vertex in the mesh  
 
 	private static readonly Color32 AliveTreeClr = new Color32(0, 255, 0, 255);
 	private static readonly Color32 BurningTreeClr = new Color32(255, 0, 0, 255);
@@ -92,7 +95,7 @@ public class ForestPart : MonoBehaviour
 
 				if (tree < Fire && Random.value < FireSpreadSpeed)
 				{
-					//add all neighbour fires
+					//add up the influence of all neighbour fires
 					float neigh = 0f;
 
 					if (x > 0 && x < Size - 1 && y > 0 && y < Size - 1) //simple case
@@ -227,6 +230,7 @@ public class ForestPart : MonoBehaviour
 				{
 					c = BurningTreeClr;
 				}
+				//5 sides of the cube, each with 4 vertices
 				for (var k = 0; k < 20; k++)
 				{
 					_treeColors[i + k] = c;
@@ -363,6 +367,8 @@ public class ForestPart : MonoBehaviour
 		{
 			_treeData[x][y] = 1;
 		}
+		
+		//Extinguishing just one tree is ineffective, if possible, do a group of them
 		if (x > 0 && x < Size - 1 && y > 0 && y < Size - 1)
 		{
 			if (IsFire(x - 1, y) == 1) _treeData[x - 1][y] = 1;
