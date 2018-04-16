@@ -34,7 +34,6 @@ public class ForestPart : MonoBehaviour
 	[HideInInspector] public TerrainData TerrainData;
 	[HideInInspector] public float[,] Wind;
 
-
 	// Use this for initialization
 	void Awake()
 	{
@@ -44,12 +43,14 @@ public class ForestPart : MonoBehaviour
 		{
 			_treeData[i] = new byte[W];
 		}
+		ClearPart();
 	}
 
 	public void ClearPart()
 	{
 		_areaMesh = new Mesh();
 		_meshFilter.mesh = _areaMesh;
+		_treeColors = null;
 	}
 
 	public void InitPart()
@@ -58,7 +59,7 @@ public class ForestPart : MonoBehaviour
 		MakeMesh();
 	}
 
-	private void Update()
+	public void Update()
 	{
 		UpdateFire();
 		UpdateColors();
@@ -78,7 +79,7 @@ public class ForestPart : MonoBehaviour
 					//add all neighbour fires
 					float neigh = 0f;
 
-					if (x > 0 && x < W - 1 && y > 0 && y < W - 1)
+					if (x > 0 && x < W - 1 && y > 0 && y < W - 1) //simple case
 					{
 						byte t;
 						t = _treeData[x + 1][y];
@@ -99,7 +100,7 @@ public class ForestPart : MonoBehaviour
 						t = _treeData[x - 1][y - 1];
 						if (t >= F && t < OUT) neigh += Wind[0, 0];
 					}
-					else
+					else // we are on the border, we might have to look to neighbouring parts
 					{
 						neigh += Wind[0, 1] * IsFire(x - 1, y)
 						         + Wind[1, 0] * IsFire(x, y - 1)
@@ -193,6 +194,7 @@ public class ForestPart : MonoBehaviour
 
 	private void UpdateColors()
 	{
+		if (_treeColors == null) return;
 		int i = 0;
 		for (var x = 0; x < W; x++)
 		{

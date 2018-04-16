@@ -28,11 +28,14 @@ public class SceneManager : MonoBehaviour
 	public Slider WindSpeedSlider;
 	public Slider WindDirectionSlider;
 
+	public GameObject WindArrow;
+	
 	public float[,] WindMatrix; //3x3 matrix
 	public static float[,] WindBaseMatrix; //how fire spreads with no wind
+	
 	private Vector2[,] WindMatrixVectors; //3x3 matrix, helps with wind calculation
 	
-	void Start()
+	void Awake()
 	{
 		_camera = Camera.main;
 
@@ -68,7 +71,7 @@ public class SceneManager : MonoBehaviour
 		
 		Ray ray = _camera.ScreenPointToRay( Input.mousePosition );
 		RaycastHit hit;
-		if ( !Physics.Raycast(ray, out hit, 100, TerrainLayer) )
+		if ( !Physics.Raycast(ray, out hit, 300, TerrainLayer) )
 		{
 			return;
 		}
@@ -97,6 +100,8 @@ public class SceneManager : MonoBehaviour
 	public void WindDirChange()
 	{
 		UpdateWind();
+		var angle = WindDirectionSlider.value * 180 / Mathf.PI;
+		WindArrow.transform.localRotation = Quaternion.Euler(0,360f-angle,0);
 	}
 
 	private void UpdateWind()

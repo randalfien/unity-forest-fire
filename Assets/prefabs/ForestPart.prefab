@@ -97,9 +97,10 @@ MonoBehaviour:
   PerlinScale: 0.12
   PerlinOffsetX: 2633
   PerlinOffsetY: 5538
-  TreeDensity: 7.38
+  TreeDensity: 7.3
   TreeSize: 0.7
   FireSpreadSpeed: 0.6
   BurnSpeed: 0.36
   MyX: 0
   MyY: 0
+  TerrainData: {fileID: 0}
