@@ -9,7 +9,7 @@ public class ForestPart : MonoBehaviour
 	public float TreeDensity = 10;
 	public float TreeSize = 0.9f;
 
-	public const int W = 60;
+	public const int W = 55;
 	private const byte F = 64;
 	private const byte OUT = 255;
 	private byte[][] _treeData; // 0 - no tree, 1 - fresh tree, 2-63 - hot tree, 64-254 burning tree, 255 burned tree
@@ -50,6 +50,13 @@ public class ForestPart : MonoBehaviour
 	{
 		_areaMesh = new Mesh();
 		_meshFilter.mesh = _areaMesh;
+		for (var x = 0; x < W; x++)
+		{
+			for (var y = 0; y < W; y++)
+			{
+				_treeData[x][y] = 0;
+			}
+		}
 		_treeColors = null;
 	}
 
@@ -59,7 +66,7 @@ public class ForestPart : MonoBehaviour
 		MakeMesh();
 	}
 
-	public void Update()
+	public void DoUpdate()
 	{
 		UpdateFire();
 		UpdateColors();

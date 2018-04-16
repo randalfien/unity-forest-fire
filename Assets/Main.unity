@@ -501,7 +501,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 267128733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 145, y: 73.07, z: 145}
+  m_LocalPosition: {x: 145, y: 65, z: 145}
   m_LocalScale: {x: 3, y: 1.35, z: 3}
   m_Children:
   - {fileID: 906772025}
@@ -1711,6 +1711,7 @@ MonoBehaviour:
   WindSpeedSlider: {fileID: 628846064}
   WindDirectionSlider: {fileID: 1334152165}
   WindArrow: {fileID: 267128733}
+  WindStrengthMultiplier: 4
 --- !u!1 &1038205560
 GameObject:
   m_ObjectHideFlags: 0
@@ -3346,13 +3347,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1605834734}
-  m_LocalRotation: {x: 0.38276565, y: 0.30944043, z: -0.13780409, w: 0.85950404}
-  m_LocalPosition: {x: 53.79, y: 59.21, z: 42.26}
+  m_LocalRotation: {x: 0.4479057, y: 0.33470246, z: -0.1855286, w: 0.8080433}
+  m_LocalPosition: {x: 80, y: 127, z: 77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 48.01, y: 39.6, z: 0}
+  m_LocalEulerAnglesHint: {x: 58, y: 45, z: 0}
 --- !u!114 &1605834739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3367,8 +3368,8 @@ MonoBehaviour:
   target: {fileID: 0}
   targetOffset: {x: 0, y: 0, z: 0}
   distance: 5
-  maxDistance: 20
-  minDistance: 0.6
+  maxDistance: 160
+  minDistance: 0
   xSpeed: 200
   ySpeed: 200
   yMinLimit: -80

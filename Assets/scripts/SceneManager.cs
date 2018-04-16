@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using NUnit.Framework.Constraints;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour
@@ -34,6 +31,8 @@ public class SceneManager : MonoBehaviour
 	public static float[,] WindBaseMatrix; //how fire spreads with no wind
 	
 	private Vector2[,] WindMatrixVectors; //3x3 matrix, helps with wind calculation
+
+	public float WindStrengthMultiplier = 4;
 	
 	void Awake()
 	{
@@ -64,7 +63,7 @@ public class SceneManager : MonoBehaviour
 		{
 			return;
 		}
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1))
+		if (EventSystem.current.IsPointerOverGameObject(-1))
 		{
 			return;
 		}
@@ -114,7 +113,7 @@ public class SceneManager : MonoBehaviour
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				var a = Vector2.Dot( WindMatrixVectors[i, j],v);
+				var a = WindStrengthMultiplier*Vector2.Dot( WindMatrixVectors[i, j],v);
 				
 				WindMatrix[i, j] = WindBaseMatrix[i,j] + a*speed;				
 

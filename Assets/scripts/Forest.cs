@@ -6,14 +6,33 @@ public class Forest : MonoBehaviour
 
 	public Terrain Terrain;
 
-	public const int Width = 5; //In number of parts
-	public const int Height = 5; //In number of parts
+	public const int Width = 6; //In number of parts
+	public const int Height = 6; //In number of parts
 
 	private readonly ForestPart[,] _parts = new ForestPart[Width, Height];
 
+	private bool IsRunning;
+	private int currentRow;
+	
 	private void Start()
 	{
 		PrepareForestParts();
+	}
+
+	private void Update()
+	{
+		if (!IsRunning) return;
+		
+		//Update just two rows at a time, in effect updating at only a third of the framerate
+		//Slows down the simulation, but keeps framerate at 60fps
+		
+		for (int j = 0; j < Height; j++)  
+		{
+			_parts[currentRow, j].DoUpdate();
+			_parts[(currentRow + 1) % Width, j].DoUpdate();
+		}
+		
+		currentRow = (currentRow + 2) % Width;
 	}
 
 	private void PrepareForestParts()
@@ -30,8 +49,7 @@ public class Forest : MonoBehaviour
 				partComp.MyY = j;
 				partComp.OtherParts = _parts;
 				partComp.TerrainData = Terrain.terrainData;
-				partComp.Wind = SceneManager.WindBaseMatrix;
-				partComp.enabled = false;
+				partComp.Wind = SceneManager.WindBaseMatrix;				
 				_parts[i, j] = partComp;
 			}
 		}
@@ -82,10 +100,7 @@ public class Forest : MonoBehaviour
 
 	public void SetSimulationActive(bool value)
 	{
-		foreach (var part in _parts)
-		{
-			part.enabled = value;
-		}
+		IsRunning = value;
 	}
 	
 	public void WindChanged(float[,] windMatrix)
