@@ -1,4 +1,8 @@
-﻿Shader "Custom/Vertex Colored Surf Shader" {
+﻿/**
+ * Simplest surface shader to show vertex color
+ */
+
+Shader "Custom/Vertex Color Surface Shader" {
     SubShader {
         Tags { "RenderType" = "Opaque" }
         CGPROGRAM
@@ -11,14 +15,10 @@
         void surf (Input IN, inout SurfaceOutput o) {
             o.Albedo = IN.color;
             /*
-                fixed3 Normal;  // tangent space normal, if written
-                fixed3 Emission;
-                half Specular;  // specular power in 0..1 range
-                fixed Gloss;    // specular intensity
-                fixed Alpha;    // alpha for transparencies
+            fixed3 Emission; //possibly use to make fire glow
             */
         }
-      ENDCG
+        ENDCG
     }
     Fallback "Diffuse"
   }

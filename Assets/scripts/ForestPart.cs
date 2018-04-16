@@ -1,18 +1,39 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+/**
+ * 
+ */
 public class ForestPart : MonoBehaviour
 {
+	// PUBLIC
+	
+	//For generating random trees
 	public float PerlinScale = 1 / 5f;
 	public float PerlinOffsetX = 4894.98f;
 	public float PerlinOffsetY = 6548.8f;
 	public float TreeDensity = 10;
-	public float TreeSize = 0.9f;
+	public float TreeSize = 0.9f; //For values > 1, trees will overlap
 
-	public const int W = 55;
-	private const byte F = 64;
-	private const byte OUT = 255;
-	private byte[][] _treeData; // 0 - no tree, 1 - fresh tree, 2-63 - hot tree, 64-254 burning tree, 255 burned tree
+	public const int Size = 55; //Size of the part, part is always square.
+	
+	[Range(0, 1)] public float FireSpreadSpeed = 0.6f;
+	[Range(0, 1)] public float BurnSpeed = 0.6f;
+	
+	//These values are set by Forest.cs
+	[HideInInspector] public int MyX;
+	[HideInInspector] public int MyY;
+	[HideInInspector] public ForestPart[,] OtherParts;
+	[HideInInspector] public TerrainData TerrainData;
+	[HideInInspector] public float[,] Wind;
+	
+	// PRIVATE
+	
+	/* Data structure - jagged array performs about 10% faster then 2D array in this app.
+	 * Bytes meaning: 0 - no tree, 1-63 - fresh tree, 64-254 burning tree, 255 burned tree
+	 */
+	private byte[][] _treeData; 
+	private const byte Fire = 64;
+	private const byte Burned = 255;
 
 	private Mesh _areaMesh;
 	private MeshFilter _meshFilter;
@@ -22,26 +43,14 @@ public class ForestPart : MonoBehaviour
 	private static readonly Color32 AliveTreeClr = new Color32(0, 255, 0, 255);
 	private static readonly Color32 BurningTreeClr = new Color32(255, 0, 0, 255);
 	private static readonly Color32 DeadTreeClr = new Color32(0, 0, 0, 255);
-
-	[Range(0, 1)] public float FireSpreadSpeed = 0.6f;
-	[Range(0, 1)] public float BurnSpeed = 0.6f;
-
-	//Set by Forest.cs
-	[HideInInspector] public int MyX;
-
-	[HideInInspector] public int MyY;
-	[HideInInspector] public ForestPart[,] OtherParts;
-	[HideInInspector] public TerrainData TerrainData;
-	[HideInInspector] public float[,] Wind;
-
-	// Use this for initialization
+	
 	void Awake()
 	{
 		_meshFilter = GetComponent<MeshFilter>();
-		_treeData = new byte[W][];
-		for (int i = 0; i < W; i++)
+		_treeData = new byte[Size][];
+		for (int i = 0; i < Size; i++)
 		{
-			_treeData[i] = new byte[W];
+			_treeData[i] = new byte[Size];
 		}
 		ClearPart();
 	}
@@ -50,9 +59,9 @@ public class ForestPart : MonoBehaviour
 	{
 		_areaMesh = new Mesh();
 		_meshFilter.mesh = _areaMesh;
-		for (var x = 0; x < W; x++)
+		for (var x = 0; x < Size; x++)
 		{
-			for (var y = 0; y < W; y++)
+			for (var y = 0; y < Size; y++)
 			{
 				_treeData[x][y] = 0;
 			}
@@ -60,7 +69,7 @@ public class ForestPart : MonoBehaviour
 		_treeColors = null;
 	}
 
-	public void InitPart()
+	public void InitRandomTerrain()
 	{
 		GenerateTrees();
 		MakeMesh();
@@ -74,38 +83,38 @@ public class ForestPart : MonoBehaviour
 
 	private void UpdateFire()
 	{
-		for (var x = 0; x < W; x++)
+		for (var x = 0; x < Size; x++)
 		{
-			for (var y = 0; y < W; y++)
+			for (var y = 0; y < Size; y++)
 			{
 				var tree = _treeData[x][y];
 				if (tree == 0) continue;
 
-				if (tree < F && Random.value < FireSpreadSpeed)
+				if (tree < Fire && Random.value < FireSpreadSpeed)
 				{
 					//add all neighbour fires
 					float neigh = 0f;
 
-					if (x > 0 && x < W - 1 && y > 0 && y < W - 1) //simple case
+					if (x > 0 && x < Size - 1 && y > 0 && y < Size - 1) //simple case
 					{
 						byte t;
 						t = _treeData[x + 1][y];
-						if (t >= F && t < OUT) neigh += Wind[2, 1];
+						if (t >= Fire && t < Burned) neigh += Wind[2, 1];
 						t = _treeData[x - 1][y];
-						if (t >= F && t < OUT) neigh += Wind[0, 1];
+						if (t >= Fire && t < Burned) neigh += Wind[0, 1];
 						t = _treeData[x][y + 1];
-						if (t >= F && t < OUT) neigh += Wind[1, 2];
+						if (t >= Fire && t < Burned) neigh += Wind[1, 2];
 						t = _treeData[x][y - 1];
-						if (t >= F && t < OUT) neigh += Wind[1, 0];
+						if (t >= Fire && t < Burned) neigh += Wind[1, 0];
 
 						t = _treeData[x + 1][y + 1];
-						if (t >= F && t < OUT) neigh += Wind[2, 2];
+						if (t >= Fire && t < Burned) neigh += Wind[2, 2];
 						t = _treeData[x - 1][y + 1];
-						if (t >= F && t < OUT) neigh += Wind[0, 2];
+						if (t >= Fire && t < Burned) neigh += Wind[0, 2];
 						t = _treeData[x + 1][y - 1];
-						if (t >= F && t < OUT) neigh += Wind[2, 0];
+						if (t >= Fire && t < Burned) neigh += Wind[2, 0];
 						t = _treeData[x - 1][y - 1];
-						if (t >= F && t < OUT) neigh += Wind[0, 0];
+						if (t >= Fire && t < Burned) neigh += Wind[0, 0];
 					}
 					else // we are on the border, we might have to look to neighbouring parts
 					{
@@ -123,7 +132,7 @@ public class ForestPart : MonoBehaviour
 					_treeData[x][y] += (byte) neigh;
 				}
 
-				if (tree >= F && tree < OUT && Random.value < BurnSpeed)
+				if (tree >= Fire && tree < Burned && Random.value < BurnSpeed)
 				{
 					_treeData[x][y]++;
 				}
@@ -133,32 +142,32 @@ public class ForestPart : MonoBehaviour
 
 	public int IsFire(int x, int y)
 	{
-		if (x >= 0 && x < W && y >= 0 && y < W)
+		if (x >= 0 && x < Size && y >= 0 && y < Size)
 		{
 			var tree = _treeData[x][y];
-			return tree >= F && tree < OUT ? 1 : 0;
+			return tree >= Fire && tree < Burned ? 1 : 0;
 		}
 		var newX = MyX;
 		var newY = MyY;
 		if (x < 0)
 		{
 			newX--;
-			x += W;
+			x += Size;
 		}
-		else if (x >= W)
+		else if (x >= Size)
 		{
 			newX++;
-			x -= W;
+			x -= Size;
 		}
 		if (y < 0)
 		{
 			newY--;
-			y += W;
+			y += Size;
 		}
-		else if (y >= W)
+		else if (y >= Size)
 		{
 			newY++;
-			y -= W;
+			y -= Size;
 		}
 		if (newX < 0 || newX >= Forest.Width || newY < 0 || newY >= Forest.Height)
 		{
@@ -171,11 +180,11 @@ public class ForestPart : MonoBehaviour
 	{
 		for (var i = 0; i < 150; i++)
 		{
-			var x = Random.Range(0, W);
-			var y = Random.Range(0, W);
-			if (_treeData[x][y] > 0 && _treeData[x][y] < F)
+			var x = Random.Range(0, Size);
+			var y = Random.Range(0, Size);
+			if (_treeData[x][y] > 0 && _treeData[x][y] < Fire)
 			{
-				_treeData[x][y] = F;
+				_treeData[x][y] = Fire;
 				break;
 			}
 		}
@@ -184,9 +193,9 @@ public class ForestPart : MonoBehaviour
 
 	private void GenerateTrees()
 	{
-		for (var x = 0; x < W; x++)
+		for (var x = 0; x < Size; x++)
 		{
-			for (var y = 0; y < W; y++)
+			for (var y = 0; y < Size; y++)
 			{
 				_treeData[x][y] = (byte) (TerrainFormula(x, y) > 3f ? 1 : 0);
 			}
@@ -195,26 +204,26 @@ public class ForestPart : MonoBehaviour
 
 	private float TerrainFormula(float x, float y)
 	{
-		return TreeDensity * Mathf.PerlinNoise(PerlinOffsetX + (x + W * MyX) * PerlinScale,
-			       PerlinOffsetY + (y + W * MyY) * PerlinScale);
+		return TreeDensity * Mathf.PerlinNoise(PerlinOffsetX + (x + Size * MyX) * PerlinScale,
+			       PerlinOffsetY + (y + Size * MyY) * PerlinScale);
 	}
 
 	private void UpdateColors()
 	{
 		if (_treeColors == null) return;
 		int i = 0;
-		for (var x = 0; x < W; x++)
+		for (var x = 0; x < Size; x++)
 		{
-			for (var y = 0; y < W; y++)
+			for (var y = 0; y < Size; y++)
 			{
 				var tree = _treeData[x][y];
 				if (tree == 0) continue;
 				Color32 c = DeadTreeClr;
-				if (tree < F)
+				if (tree < Fire)
 				{
 					c = AliveTreeClr;
 				}
-				else if (tree < OUT)
+				else if (tree < Burned)
 				{
 					c = BurningTreeClr;
 				}
@@ -237,20 +246,20 @@ public class ForestPart : MonoBehaviour
 		var tris = new List<int>();
 		var clrs = new List<Color32>();
 
-		var up = Vector3.up * TreeSize * 2;
+		var up = Vector3.up * TreeSize * 2; //trees are twice as high as wide
 		var forward = Vector3.forward * TreeSize;
 		var right = Vector3.right * TreeSize;
 
 		var terrainSize = TerrainData.size.x;
 
-		for (var x = 0; x < W; x++)
+		for (var x = 0; x < Size; x++)
 		{
-			for (var y = 0; y < W; y++)
+			for (var y = 0; y < Size; y++)
 			{
 				var tree = _treeData[x][y];
 				if (tree == 0) continue;
 
-				var h = TerrainData.GetInterpolatedHeight((MyX * W + x) / terrainSize, (MyY * W + y) / terrainSize);
+				var h = TerrainData.GetInterpolatedHeight((MyX * Size + x) / terrainSize, (MyY * Size + y) / terrainSize);
 
 				BuildFace(new Vector3(x, h, y), up, forward, false, verts, clrs, tris);
 				BuildFace(new Vector3(x + TreeSize, h, y), up, forward, true, verts, clrs, tris);
@@ -260,10 +269,13 @@ public class ForestPart : MonoBehaviour
 				BuildFace(new Vector3(x, h, y + TreeSize), up, right, false, verts, clrs, tris);
 			}
 		}
-		_treeColors = clrs.ToArray();
+		
 		_areaMesh.vertices = verts.ToArray();
 		_areaMesh.triangles = tris.ToArray();
+		
+		_treeColors = clrs.ToArray();
 		_areaMesh.colors32 = _treeColors;
+		
 		_areaMesh.RecalculateBounds();
 		_areaMesh.RecalculateNormals();
 
@@ -310,8 +322,8 @@ public class ForestPart : MonoBehaviour
 
 	public void AddTreeAt(Vector3 worldCoords)
 	{
-		var localX = Mathf.FloorToInt(worldCoords.x - W * MyX);
-		var localY = Mathf.FloorToInt(worldCoords.z - W * MyY);
+		var localX = Mathf.FloorToInt(worldCoords.x - Size * MyX);
+		var localY = Mathf.FloorToInt(worldCoords.z - Size * MyY);
 		if (_treeData[localX][localY] == 0)
 		{
 			_treeData[localX][localY] = 1;
@@ -322,20 +334,19 @@ public class ForestPart : MonoBehaviour
 
 	public void AddFireAt(Vector3 worldCoords)
 	{
-		var localX = Mathf.FloorToInt(worldCoords.x - W * MyX);
-		var localY = Mathf.FloorToInt(worldCoords.z - W * MyY);
-		if (_treeData[localX][localY] > 0 && _treeData[localX][localY] < F)
+		var localX = Mathf.FloorToInt(worldCoords.x - Size * MyX);
+		var localY = Mathf.FloorToInt(worldCoords.z - Size * MyY);
+		if (_treeData[localX][localY] > 0 && _treeData[localX][localY] < Fire)
 		{
-			_treeData[localX][localY] = F;
-		}
-		MakeMesh();
+			_treeData[localX][localY] = Fire;
+		}		
 		UpdateColors();
 	}
 
 	public void RemoveTreeAt(Vector3 worldCoords)
 	{
-		var localX = Mathf.FloorToInt(worldCoords.x - W * MyX);
-		var localY = Mathf.FloorToInt(worldCoords.z - W * MyY);
+		var localX = Mathf.FloorToInt(worldCoords.x - Size * MyX);
+		var localY = Mathf.FloorToInt(worldCoords.z - Size * MyY);
 		if (_treeData[localX][localY] > 0)
 		{
 			_treeData[localX][localY] = 0;
@@ -346,13 +357,24 @@ public class ForestPart : MonoBehaviour
 
 	public void ExtinguishAt(Vector3 worldCoords)
 	{
-		var localX = Mathf.FloorToInt(worldCoords.x - W * MyX);
-		var localY = Mathf.FloorToInt(worldCoords.z - W * MyY);
-		if (IsFire(localX, localY) == 1)
+		var x = Mathf.FloorToInt(worldCoords.x - Size * MyX);
+		var y = Mathf.FloorToInt(worldCoords.z - Size * MyY);
+		if (IsFire(x, y) == 1)
 		{
-			_treeData[localX][localY] = 1;
+			_treeData[x][y] = 1;
 		}
-		MakeMesh();
+		if (x > 0 && x < Size - 1 && y > 0 && y < Size - 1)
+		{
+			if (IsFire(x - 1, y) == 1) _treeData[x - 1][y] = 1;
+			if (IsFire(x + 1, y) == 1) _treeData[x + 1][y] = 1;
+			if (IsFire(x, y + 1) == 1) _treeData[x][y + 1] = 1;
+			if (IsFire(x, y - 1) == 1) _treeData[x][y - 1] = 1;
+			if (IsFire(x + 1, y + 1) == 1) _treeData[x + 1][y + 1] = 1;
+			if (IsFire(x - 1, y - 1) == 1) _treeData[x - 1][y - 1] = 1;
+			if (IsFire(x + 1, y - 1) == 1) _treeData[x + 1][y - 1] = 1;
+			if (IsFire(x - 1, y + 1) == 1) _treeData[x - 1][y + 1] = 1;
+		}
+
 		UpdateColors();
 	}
 }

@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
 
+/**
+ *  Forest consists of a number of smaller parts with their own mesh
+ *  and assigns correct properties and updates them. 
+ */
 public class Forest : MonoBehaviour
 {
+	// PUBLIC
 	public GameObject ForestPartPrefab;
-
 	public Terrain Terrain;
 
-	public const int Width = 6; //In number of parts
-	public const int Height = 6; //In number of parts
+	public const int Width = 6; //how many forest parts along the X axis
+	public const int Height = 6; //how many forest parts along the Z axis
 
-	private readonly ForestPart[,] _parts = new ForestPart[Width, Height];
+	// PRIVATE
+	private readonly ForestPart[,] _parts = new ForestPart[Width, Height]; //list of all the forest parts. Parts may access other parts' data through this.
 
-	private bool IsRunning;
-	private int currentRow;
+	private bool _isRunning; //Should we keep updating the parts or not
+	private int _currentRow; //Which row should we start updating next frame
 	
 	private void Start()
 	{
@@ -21,28 +26,28 @@ public class Forest : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsRunning) return;
+		if (!_isRunning) return;
 		
 		//Update just two rows at a time, in effect updating at only a third of the framerate
-		//Slows down the simulation, but keeps framerate at 60fps
+		//Slows down the speed of simulation, but keeps framerate at 60fps
 		
 		for (int j = 0; j < Height; j++)  
 		{
-			_parts[currentRow, j].DoUpdate();
-			_parts[(currentRow + 1) % Width, j].DoUpdate();
+			_parts[_currentRow, j].DoUpdate();
+			_parts[(_currentRow + 1) % Width, j].DoUpdate();
 		}
 		
-		currentRow = (currentRow + 2) % Width;
+		_currentRow = (_currentRow + 2) % Width;
 	}
 
 	private void PrepareForestParts()
 	{
-		var PartW = ForestPart.W;
+		const int partWidth = ForestPart.Size;
 		for (int i = 0; i < Width; i++)
 		{
 			for (int j = 0; j < Height; j++)
 			{
-				var position = new Vector3(PartW * i, 0, PartW * j);
+				var position = new Vector3(partWidth * i, 0, partWidth * j);
 				var part = Instantiate(ForestPartPrefab, position, Quaternion.identity, transform);
 				var partComp = part.GetComponent<ForestPart>();
 				partComp.MyX = i;
@@ -57,7 +62,7 @@ public class Forest : MonoBehaviour
 
 	public void ClearSimulation()
 	{
-		foreach (var part in _parts) //foreach makes code more readable, not performance critical
+		foreach (var part in _parts) //foreach makes code more readable, here it's not performance critical
 		{
 			part.ClearPart();
 		}
@@ -90,17 +95,20 @@ public class Forest : MonoBehaviour
 	{
 		GetForestPart(p).ExtinguishAt(p);
 	}
-
+	
+	/**
+	 * Select correct part for a global position 
+	 */
 	private ForestPart GetForestPart(Vector3 p)
 	{
-		var i = Mathf.FloorToInt( p.x / ForestPart.W );
-		var j = Mathf.FloorToInt( p.z / ForestPart.W );
+		var i = Mathf.FloorToInt( p.x / ForestPart.Size );
+		var j = Mathf.FloorToInt( p.z / ForestPart.Size );
 		return _parts[i, j];
 	}
 
 	public void SetSimulationActive(bool value)
 	{
-		IsRunning = value;
+		_isRunning = value;
 	}
 	
 	public void WindChanged(float[,] windMatrix)
@@ -119,7 +127,7 @@ public class Forest : MonoBehaviour
 		{
 			part.PerlinOffsetX = randX;
 			part.PerlinOffsetY = randY;
-			part.InitPart();
+			part.InitRandomTerrain();
 		}
 	}
 

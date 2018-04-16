@@ -3365,9 +3365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09cedcdeac720ec4cb8a683455577fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetOffset: {x: 0, y: 0, z: 0}
-  distance: 5
+  distance: 15
   maxDistance: 160
   minDistance: 0
   xSpeed: 200

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
+// Simple camera script for moving around the terrain.
 //
-//Filename: maxCamera.cs
+// Filename: maxCamera.cs
 //
 // original: http://www.unifycommunity.com/wiki/index.php?title=MouseOrbitZoom
 //
@@ -10,8 +11,8 @@
  
 public class maxCamera : MonoBehaviour
 {
-    public Transform target;
-    public Vector3 targetOffset;
+    private Transform target;
+    private Vector3 targetOffset;
     public float distance = 5.0f;
     public float maxDistance = 20;
     public float minDistance = .6f;

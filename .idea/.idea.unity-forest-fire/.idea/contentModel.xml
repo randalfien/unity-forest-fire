@@ -20,7 +20,9 @@
           <e p="SceneManager.cs" t="Include" />
           <e p="SimulateButton.cs" t="Include" />
         </e>
-        <e p="TreeShader.shader" t="Include" />
+        <e p="shaders" t="Include">
+          <e p="TreeShader.shader" t="Include" />
+        </e>
       </e>
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
