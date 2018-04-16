@@ -17,7 +17,7 @@ public class ForestPart : MonoBehaviour
 	public float TreeDensity = 10;
 	public float TreeSize = 0.9f; //For values > 1, trees will overlap
 
-	public const int Size = 55; //Size of the part, part is always square. If value > 60, the limit of 64k verts might be reached.
+	public const int Size = 55; //Size of the part, part is always square. If value > 57, the limit of 64k verts might be reached.
 	
 	[Range(0, 1)] public float FireSpreadSpeed = 0.6f;
 	[Range(0, 1)] public float BurnSpeed = 0.6f;
