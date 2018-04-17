@@ -2,37 +2,40 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/**
+ * Basic manager to handle user actions
+ */
+
 public class SceneManager : MonoBehaviour
 {
 
-	private const int MODE_ADD = 0;
-	private const int MODE_REMOVE = 1;
-	private const int MODE_FIRE = 2;
-	private const int MODE_EXTINGUISH = 3;
+	/* CONST */
+	private const int ModeAdd = 0;
+	private const int ModeRemove = 1;
+	private const int ModeFire = 2;
+	private const int ModeExtinguish = 3;
 	
-	private bool _isSimulationRunning;
-
+	// PUBLIC
+	public float WindStrengthMultiplier = 4;
+	
 	public Forest Forest;
-
-	public SimulateButton SimButton;
-
-	public Dropdown ModeDropdown;
-
-	private Camera _camera;
-
-	public LayerMask TerrainLayer;
-
-	public Slider WindSpeedSlider;
-	public Slider WindDirectionSlider;
-
 	public GameObject WindArrow;
 	
+	/* UI */
+	public SimulateButton SimButton;
+	public Dropdown ModeDropdown;
+	public LayerMask TerrainLayer;
+	public Slider WindSpeedSlider;
+	public Slider WindDirectionSlider;
+	
+	/* Wind */
 	public float[,] WindMatrix; //3x3 matrix
 	public static float[,] WindBaseMatrix; //how fire spreads with no wind
-	
-	private Vector2[,] WindMatrixVectors; //3x3 matrix, helps with wind calculation
+	private Vector2[,] _windMatrixVectors; //3x3 matrix, helps with wind calculation
 
-	public float WindStrengthMultiplier = 4;
+	// PRIVATE
+	private Camera _camera;
+	private bool _isSimulationRunning;
 	
 	void Awake()
 	{
@@ -40,12 +43,12 @@ public class SceneManager : MonoBehaviour
 
 		WindMatrix = new float[3,3];
 		WindBaseMatrix = new float[3,3];
-		WindMatrixVectors = new Vector2[3,3];
+		_windMatrixVectors = new Vector2[3,3];
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				WindMatrixVectors[i,j] = new Vector2(i-1,j-1).normalized;
+				_windMatrixVectors[i,j] = new Vector2(i-1,j-1).normalized;
 				if (i == 1 || j == 1)
 				{
 					WindBaseMatrix[i, j] = 1f;
@@ -80,13 +83,13 @@ public class SceneManager : MonoBehaviour
 		var mode = ModeDropdown.value;
 		switch (mode)
 		{
-			case MODE_ADD: Forest.AddTreeAt(p);
+			case ModeAdd: Forest.AddTreeAt(p);
 				break;
-			case MODE_REMOVE: Forest.RemoveTreeAt(p);
+			case ModeRemove: Forest.RemoveTreeAt(p);
 				break;
-			case MODE_FIRE: Forest.AddFireAt(p);
+			case ModeFire: Forest.AddFireAt(p);
 				break;
-			case MODE_EXTINGUISH: Forest.ExtinguishAt(p);
+			case ModeExtinguish: Forest.ExtinguishAt(p);
 				break;
 		}
 	}
@@ -99,6 +102,7 @@ public class SceneManager : MonoBehaviour
 	public void WindDirChange()
 	{
 		UpdateWind();
+		/*Update wind arrow*/
 		var angle = WindDirectionSlider.value * 180 / Mathf.PI;
 		WindArrow.transform.localRotation = Quaternion.Euler(0,360f-angle,0);
 	}
@@ -108,12 +112,12 @@ public class SceneManager : MonoBehaviour
 		var speed = WindSpeedSlider.value;
 		var angle = WindDirectionSlider.value;
 		Vector2 v = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-		print("----------- v:"+v);
+		//print("----------- v:"+v);
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				var a = WindStrengthMultiplier*Vector2.Dot( WindMatrixVectors[i, j],v);
+				var a = WindStrengthMultiplier*Vector2.Dot( _windMatrixVectors[i, j],v); //get angle
 				
 				WindMatrix[i, j] = WindBaseMatrix[i,j] + a*speed;				
 
@@ -122,10 +126,11 @@ public class SceneManager : MonoBehaviour
 					WindMatrix[i, j] = 0;
 				}
 			}
-			print( WindMatrix[i,0].ToString("0.00")+"|"+WindMatrix[i,1].ToString("0.00")+"|"+WindMatrix[i,2].ToString("0.00"));
+			//print( WindMatrix[i,0].ToString("0.00")+"|"+WindMatrix[i,1].ToString("0.00")+"|"+WindMatrix[i,2].ToString("0.00"));
 		}
 		
 		Forest.WindChanged(WindMatrix);
+		SmokeParticles.SetWindSpeed(-WindStrengthMultiplier*speed*v);
 	}
 
 	public void StartStopSimulation()

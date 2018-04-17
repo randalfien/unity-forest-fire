@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1712,6 +1712,8 @@ MonoBehaviour:
   WindDirectionSlider: {fileID: 1334152165}
   WindArrow: {fileID: 267128733}
   WindStrengthMultiplier: 4
+  SmokePrefab: {fileID: 1859821994826354, guid: 9d8aeebf33728be49a683b6573273cf2,
+    type: 2}
 --- !u!1 &1038205560
 GameObject:
   m_ObjectHideFlags: 0
@@ -3284,6 +3286,7 @@ GameObject:
   - component: {fileID: 1605834736}
   - component: {fileID: 1605834735}
   - component: {fileID: 1605834739}
+  - component: {fileID: 1605834740}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3375,6 +3378,18 @@ MonoBehaviour:
   zoomRate: 60
   panSpeed: 3
   zoomDampening: 5
+--- !u!114 &1605834740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1605834734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 9156c51111dcc4f4bafcfbec6925eb66, type: 2}
 --- !u!1 &1670730630
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ public class ForestPart : MonoBehaviour
 	public float TreeSize = 0.9f; //For values > 1, trees will overlap
 
 	public const int Size = 55; //Size of the part, part is always square. If value > 57, the limit of 64k verts might be reached.
+
+	public GameObject SmokePrefab;
 	
 	[Range(0, 1)] public float FireSpreadSpeed = 0.6f;
 	[Range(0, 1)] public float BurnSpeed = 0.6f;
@@ -44,8 +46,13 @@ public class ForestPart : MonoBehaviour
 	private Color32[] _treeColors; //color for each vertex in the mesh  
 
 	private static readonly Color32 AliveTreeClr = new Color32(0, 255, 0, 255);
+	private static readonly Color32 AliveTreeClr1 = new Color32(0, 155, 0, 255);
+	private static readonly Color32 AliveTreeClr2 = new Color32(0, 71, 0, 255);
 	private static readonly Color32 BurningTreeClr = new Color32(255, 0, 0, 255);
 	private static readonly Color32 DeadTreeClr = new Color32(0, 0, 0, 255);
+
+	private byte[,] _colorNoise;
+	private ParticleSystem _smoke;
 	
 	void Awake()
 	{
@@ -56,6 +63,23 @@ public class ForestPart : MonoBehaviour
 			_treeData[i] = new byte[Size];
 		}
 		ClearPart();
+
+		//Prepare random values for the color variations
+		var colorRandom = new MRandom {seed = (uint) (MyX * MyY)};
+		_colorNoise = new byte[Size,Size];
+		for (var x = 0; x < Size; x++)
+		{
+			for (var y = 0; y < Size; y++)
+			{
+				_colorNoise[x, y] = (byte) colorRandom.getRand(x, y);
+			}
+		}
+	}
+
+	void Start()
+	{
+		_smoke = Instantiate(SmokePrefab, transform).GetComponent<ParticleSystem>();
+		
 	}
 
 	public void ClearPart()
@@ -76,6 +100,7 @@ public class ForestPart : MonoBehaviour
 	{
 		GenerateTrees();
 		MakeMesh();
+		UpdateColors();
 	}
 
 	public void DoUpdate()
@@ -138,6 +163,12 @@ public class ForestPart : MonoBehaviour
 				if (tree >= Fire && tree < Burned && Random.value < BurnSpeed)
 				{
 					_treeData[x][y]++;
+					if (_treeData[x][y] == Burned)
+					{
+						var h = TerrainData.GetInterpolatedHeight((MyX * Size + x) / TerrainData.size.x, (MyY * Size + y) / TerrainData.size.x);
+						_smoke.transform.position = new Vector3(x + Size * MyX, h + TreeSize*2, y + Size * MyY);
+						_smoke.Emit(10);
+					}
 				}
 			}
 		}
@@ -225,6 +256,14 @@ public class ForestPart : MonoBehaviour
 				if (tree < Fire)
 				{
 					c = AliveTreeClr;
+					var k = _colorNoise[x,y];
+					if (k == 1)
+					{
+						c = AliveTreeClr1;
+					}else if (k == 2)
+					{
+						c = AliveTreeClr2;
+					}
 				}
 				else if (tree < Burned)
 				{

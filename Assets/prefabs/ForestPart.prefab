@@ -99,6 +99,8 @@ MonoBehaviour:
   PerlinOffsetY: 5538
   TreeDensity: 8.3
   TreeSize: 0.7
+  SmokePrefab: {fileID: 1859821994826354, guid: 9d8aeebf33728be49a683b6573273cf2,
+    type: 2}
   FireSpreadSpeed: 0.6
   BurnSpeed: 0.33
   MyX: 0

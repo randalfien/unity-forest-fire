@@ -14,6 +14,7 @@ Shader "Custom/Vertex Color Surface Shader" {
       
         void surf (Input IN, inout SurfaceOutput o) {
             o.Albedo = IN.color;
+            o.Emission = fixed3( 2*IN.color.r,0,0 );
             /*
             fixed3 Emission; //possibly use to make fire glow
             */
