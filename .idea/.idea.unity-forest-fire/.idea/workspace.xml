@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="226d205b-188a-45cc-868f-1c2eabb7d46b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.idea.unity-forest-fire/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.unity-forest-fire/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs" afterPath="$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -164,18 +163,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SmokeParticles.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SmokeParticles.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="702">
-              <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+            <state relative-caret-position="728">
+              <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
               <folding>
-                <marker date="1524044552008" expanded="false" signature="6:52" ph="..." />
-                <marker date="1524044552008" expanded="true" signature="97:899" ph="{...}" />
-                <marker date="1524044552008" expanded="true" signature="206:264" ph="{...}" />
-                <marker date="1524044552008" expanded="true" signature="309:897" ph="{...}" />
-                <marker date="1524044552008" expanded="true" signature="359:894" ph="{...}" />
-                <marker date="1524044552008" expanded="true" signature="650:841" ph="{...}" />
+                <marker date="1524046486024" expanded="false" signature="6:52" ph="..." />
+                <marker date="1524046486024" expanded="true" signature="97:899" ph="{...}" />
+                <marker date="1524046486024" expanded="true" signature="206:264" ph="{...}" />
+                <marker date="1524046486024" expanded="true" signature="309:897" ph="{...}" />
+                <marker date="1524046486024" expanded="true" signature="359:894" ph="{...}" />
+                <marker date="1524046486024" expanded="true" signature="650:841" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -194,7 +193,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="364">
@@ -227,10 +226,10 @@
         <option value="$PROJECT_DIR$/Assets/scripts/Forest.cs" />
         <option value="$PROJECT_DIR$/Assets/shaders/TreeShader.shader" />
         <option value="$PROJECT_DIR$/Assets/scripts/MRandom.cs" />
-        <option value="$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs" />
         <option value="$PROJECT_DIR$/Assets/scripts/SceneManager.cs" />
         <option value="$PROJECT_DIR$/Assets/scripts/ForestPart.cs" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs" />
       </list>
     </option>
   </component>
@@ -417,12 +416,12 @@
         <state relative-caret-position="754">
           <caret line="29" column="30" lean-forward="false" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
           <folding>
-            <marker date="1524044552008" expanded="false" signature="6:52" ph="..." />
-            <marker date="1524044552008" expanded="true" signature="97:899" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="206:264" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="309:897" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="359:894" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="650:841" ph="{...}" />
+            <marker date="1524046486024" expanded="false" signature="6:52" ph="..." />
+            <marker date="1524046486024" expanded="true" signature="97:899" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="206:264" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="309:897" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="359:894" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="650:841" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1002,12 +1001,12 @@
         <state relative-caret-position="702">
           <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
           <folding>
-            <marker date="1524044552008" expanded="false" signature="6:52" ph="..." />
-            <marker date="1524044552008" expanded="true" signature="97:899" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="206:264" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="309:897" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="359:894" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="650:841" ph="{...}" />
+            <marker date="1524046486024" expanded="false" signature="6:52" ph="..." />
+            <marker date="1524046486024" expanded="true" signature="97:899" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="206:264" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="309:897" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="359:894" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="650:841" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1413,21 +1412,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
-          <folding>
-            <marker date="1524044552008" expanded="false" signature="6:52" ph="..." />
-            <marker date="1524044552008" expanded="true" signature="97:899" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="206:264" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="309:897" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="359:894" ph="{...}" />
-            <marker date="1524044552008" expanded="true" signature="650:841" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/scripts/SceneManager.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2704">
@@ -1522,6 +1506,21 @@
             <marker date="1523978180998" expanded="true" signature="9990:10801" ph="{...}" />
             <marker date="1523978180998" expanded="true" signature="10130:10162" ph="{...}" />
             <marker date="1523978180998" expanded="true" signature="10299:10779" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/scripts/SmokeParticles.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="728">
+          <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+          <folding>
+            <marker date="1524046486024" expanded="false" signature="6:52" ph="..." />
+            <marker date="1524046486024" expanded="true" signature="97:899" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="206:264" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="309:897" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="359:894" ph="{...}" />
+            <marker date="1524046486024" expanded="true" signature="650:841" ph="{...}" />
           </folding>
         </state>
       </provider>

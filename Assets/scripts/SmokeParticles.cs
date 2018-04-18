@@ -25,7 +25,7 @@ public class SmokeParticles : MonoBehaviour
 			for(int k = 0; k < count; k++)
 			{
 				var v = particles[k].velocity;
-				var age = (particles[i].remainingLifetime / particles[i].startLifetime);
+				var age = (particles[k].remainingLifetime / particles[k].startLifetime);
 				v.x = age*a.x;
 				v.z = age*a.y;
 				particles[k].velocity = v;
