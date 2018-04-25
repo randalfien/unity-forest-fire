@@ -28,7 +28,7 @@ public class ForestPart : MonoBehaviour
 	[HideInInspector] public int MyX;
 	[HideInInspector] public int MyY;
 	[HideInInspector] public ForestPart[,] OtherParts;
-	[HideInInspector] public TerrainData TerrainData;
+	[HideInInspector] public LowPolyTerrain TerrainData;
 	[HideInInspector] public float[,] Wind;
 	
 	// PRIVATE
@@ -165,7 +165,7 @@ public class ForestPart : MonoBehaviour
 					_treeData[x][y]++;
 					if (_treeData[x][y] == Burned)
 					{
-						var h = TerrainData.GetInterpolatedHeight((MyX * Size + x) / TerrainData.size.x, (MyY * Size + y) / TerrainData.size.x);
+						var h = TerrainData.GetHeight(MyX * Size + x, MyY * Size + y);
 						_smoke.transform.position = new Vector3(x + Size * MyX, h + TreeSize*2, y + Size * MyY);
 						_smoke.Emit(10);
 					}
@@ -293,8 +293,6 @@ public class ForestPart : MonoBehaviour
 		var forward = Vector3.forward * TreeSize;
 		var right = Vector3.right * TreeSize;
 
-		var terrainSize = TerrainData.size.x;
-
 		for (var x = 0; x < Size; x++)
 		{
 			for (var y = 0; y < Size; y++)
@@ -302,7 +300,7 @@ public class ForestPart : MonoBehaviour
 				var tree = _treeData[x][y];
 				if (tree == 0) continue;
 
-				var h = TerrainData.GetInterpolatedHeight((MyX * Size + x) / terrainSize, (MyY * Size + y) / terrainSize);
+				var h = TerrainData.GetHeight(MyX * Size + x, MyY * Size + y);
 
 				BuildFace(new Vector3(x, h, y), up, forward, false, verts, clrs, tris);
 				BuildFace(new Vector3(x + TreeSize, h, y), up, forward, true, verts, clrs, tris);

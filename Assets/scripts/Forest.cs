@@ -8,7 +8,7 @@ public class Forest : MonoBehaviour
 {
 	// PUBLIC
 	public GameObject ForestPartPrefab;
-	public Terrain Terrain;
+	public LowPolyTerrain Terrain;
 
 	public const int Width = 6; //how many forest parts along the X axis
 	public const int Height = 6; //how many forest parts along the Z axis
@@ -53,7 +53,7 @@ public class Forest : MonoBehaviour
 				partComp.MyX = i;
 				partComp.MyY = j;
 				partComp.OtherParts = _parts;
-				partComp.TerrainData = Terrain.terrainData;
+				partComp.TerrainData = Terrain;
 				partComp.Wind = SceneManager.WindBaseMatrix;				
 				_parts[i, j] = partComp;
 			}
